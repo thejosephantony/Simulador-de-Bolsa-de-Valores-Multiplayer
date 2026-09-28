@@ -1,0 +1,46 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java / Maven / Gradle
+**/target/
+**/build/
+.gradle/
+*.class
+
+# Node / frontend
+**/node_modules/
+**/dist/
+**/.vite/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Python / optional AI service
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+**/venv/
+*.pyc
+
+# Logs
+*.log
+logs/
+
+# Docker local data
+.docker-data/
+
+# Test / coverage outputs
+coverage/
+**/coverage/
+**/reports/
