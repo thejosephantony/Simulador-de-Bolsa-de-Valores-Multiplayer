@@ -42,5 +42,56 @@ services:
       timeout: 5s
       retries: 10
 
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    container_name: stock-market-auth
+    environment:
+      DB_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-stock_market}
+      POSTGRES_USER: ${POSTGRES_USER:-stock_market}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-stock_market}
+      AUTH_SERVICE_PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  market-service:
+    build:
+      context: .
+      dockerfile: services/market-service/Dockerfile
+    container_name: stock-market-market
+    environment:
+      DB_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-stock_market}
+      POSTGRES_USER: ${POSTGRES_USER:-stock_market}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-stock_market}
+      MARKET_SERVICE_PORT: 8082
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  portfolio-service:
+    build:
+      context: .
+      dockerfile: services/portfolio-service/Dockerfile
+    container_name: stock-market-portfolio
+    environment:
+      DB_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-stock_market}
+      POSTGRES_USER: ${POSTGRES_USER:-stock_market}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-stock_market}
+      PORTFOLIO_SERVICE_PORT: 8083
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
