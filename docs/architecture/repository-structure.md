@@ -1,20 +1,21 @@
 # Estrutura do repositório
 
-O projeto utiliza um **monorepo**: frontend, serviços, infraestrutura, testes e documentação ficam no mesmo repositório.
+O projeto utiliza um **monorepo** organizado por áreas técnicas. A estrutura deixa explícita a separação entre backend, frontend, infraestrutura, testes e documentação, sem alterar as fronteiras da arquitetura distribuída.
 
 ## Estrutura
 
 ```text
 .
-├── frontend/
-├── services/
-│   ├── gateway/
+├── backend/
+│   ├── pom.xml
 │   ├── auth-service/
 │   ├── market-service/
 │   ├── portfolio-service/
 │   ├── realtime-service/
-│   └── agent-service/
-├── ai-service/
+│   ├── agent-service/
+│   ├── gateway/
+│   └── ai-service/
+├── frontend/
 ├── infra/
 │   ├── db/
 │   ├── rabbitmq/
@@ -37,57 +38,25 @@ O projeto utiliza um **monorepo**: frontend, serviços, infraestrutura, testes e
 └── README.md
 ```
 
-## Ordem recomendada para começar
+## Fronteiras arquiteturais
 
-Não é necessário implementar todos os serviços imediatamente.
+- **Auth Service**: identidade, autenticação e autorização.
+- **Market Service**: ativos, ordens, Order Book, Matching Engine e trades.
+- **Portfolio Service**: saldo, reservas, posições e patrimônio.
+- **Realtime Service**: WebSocket/STOMP e sincronização dos clientes.
+- **Agent Service**: investidores automatizados.
+- **Gateway**: entrada e roteamento quando sua introdução for necessária.
+- **AI Service**: ML opcional; não altera diretamente saldo, carteira ou trades.
 
-1. **Infraestrutura local**
-   - PostgreSQL;
-   - Redis;
-   - RabbitMQ.
-
-2. **Auth Service**
-   - cadastro;
-   - login;
-   - JWT;
-   - identificação do usuário.
-
-3. **Market Service**
-   - ativos;
-   - ordens;
-   - Order Book;
-   - Matching Engine.
-
-4. **Portfolio Service**
-   - saldo;
-   - reservas;
-   - carteira;
-   - patrimônio.
-
-5. **Frontend**
-   - login;
-   - lista de ativos;
-   - ticket de ordem;
-   - ordens;
-   - carteira.
-
-6. **Realtime Service**
-   - WebSocket;
-   - atualizações do livro, ordens e carteira.
-
-7. **Agent Service**
-   - investidores automatizados baseados em regras.
-
-8. **Gateway, observabilidade e AI Service**
-   - introduzir conforme a integração justificar.
-
-## Regra para novos serviços
-
-Um novo microsserviço só deve ser criado quando houver uma responsabilidade independente clara, necessidade de isolamento de falha ou razão técnica documentável. Evite criar serviços apenas para aumentar a quantidade de componentes distribuídos.
+O fato de todos os serviços estarem em `backend/` é apenas uma organização do monorepo. Eles continuam sendo componentes independentes da arquitetura distribuída.
 
 ## Testes
 
-- testes unitários: dentro do respectivo serviço/aplicação;
-- testes de integração: `tests/integration/`;
-- testes de carga: `tests/performance/`;
-- cenários de falha: `tests/failure/`.
+- unitários: dentro do respectivo serviço;
+- integração: `tests/integration/`;
+- carga: `tests/performance/`;
+- falhas: `tests/failure/`.
+
+## Regra para novos serviços
+
+Criar um novo microsserviço somente quando houver uma responsabilidade independente, necessidade de isolamento de falha ou justificativa técnica clara.
