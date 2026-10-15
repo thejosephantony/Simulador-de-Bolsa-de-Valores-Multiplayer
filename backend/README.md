@@ -1,16 +1,19 @@
-# Services
+# Backend
 
-Serviços backend do sistema.
+Backend distribuído do Simulador de Bolsa de Valores Multiplayer.
 
-Estrutura inicial:
+A organização respeita as fronteiras arquiteturais do projeto:
 
-- `gateway/` — entrada das APIs e roteamento;
-- `auth-service/` — usuários, autenticação e JWT;
+- `auth-service/` — usuários, autenticação e autorização;
 - `market-service/` — ativos, ordens, Order Book, Matching Engine e trades;
 - `portfolio-service/` — saldo, reservas, carteira e patrimônio;
-- `realtime-service/` — WebSocket/STOMP e notificações;
-- `agent-service/` — investidores automatizados.
+- `realtime-service/` — sincronização WebSocket/STOMP;
+- `agent-service/` — investidores automatizados;
+- `gateway/` — entrada e roteamento das APIs;
+- `ai-service/` — Machine Learning opcional e desacoplado do núcleo transacional.
 
-## Regra importante
+Os serviços Java compartilham o Maven parent em `backend/pom.xml`, mas mantêm responsabilidades e schemas de dados separados.
 
-A separação em serviços deve representar responsabilidades reais. Evite criar novos microsserviços sem uma necessidade técnica clara.
+## Regra arquitetural
+
+Um novo serviço só deve ser criado quando houver responsabilidade independente, necessidade de isolamento de falha ou justificativa clara de Sistemas Distribuídos. O Matching Engine permanece sob responsabilidade do `market-service`.
