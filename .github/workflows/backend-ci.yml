@@ -4,10 +4,14 @@ on:
   push:
     paths:
       - "backend/**"
+      - "docker-compose.yml"
+      - ".env.example"
       - ".github/workflows/backend-ci.yml"
   pull_request:
     paths:
       - "backend/**"
+      - "docker-compose.yml"
+      - ".env.example"
       - ".github/workflows/backend-ci.yml"
 
 jobs:
@@ -27,3 +31,6 @@ jobs:
 
       - name: Build backend
         run: mvn -B -ntp -f backend/pom.xml clean verify
+
+      - name: Validate Docker Compose
+        run: docker compose config
