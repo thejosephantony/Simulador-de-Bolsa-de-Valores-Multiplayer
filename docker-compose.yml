@@ -45,7 +45,7 @@ services:
   auth-service:
     build:
       context: .
-      dockerfile: services/auth-service/Dockerfile
+      dockerfile: backend/auth-service/Dockerfile
     container_name: stock-market-auth
     environment:
       DB_HOST: postgres
@@ -62,7 +62,7 @@ services:
   market-service:
     build:
       context: .
-      dockerfile: services/market-service/Dockerfile
+      dockerfile: backend/market-service/Dockerfile
     container_name: stock-market-market
     environment:
       DB_HOST: postgres
@@ -79,7 +79,7 @@ services:
   portfolio-service:
     build:
       context: .
-      dockerfile: services/portfolio-service/Dockerfile
+      dockerfile: backend/portfolio-service/Dockerfile
     container_name: stock-market-portfolio
     environment:
       DB_HOST: postgres

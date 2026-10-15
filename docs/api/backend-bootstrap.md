@@ -8,25 +8,25 @@
 | market-service | 8082 | assets, orders, Order Book, Matching Engine and trades |
 | portfolio-service | 8083 | balance, reservations, positions and portfolio |
 
-All three services use Java 21, Spring Boot and PostgreSQL.
+Os serviços centrais ficam em `backend/` e usam Java 21, Spring Boot e PostgreSQL.
 
-For the first development stage, the services share one PostgreSQL instance while using separate schemas:
+Na fase inicial, os serviços compartilham uma instância PostgreSQL usando schemas separados:
 
 - `auth`
 - `market`
 - `portfolio`
 
-This reduces local infrastructure complexity while preserving data ownership boundaries between services.
+Isso reduz a complexidade local sem quebrar as fronteiras de responsabilidade.
 
-## First implemented API
+## API implementada
 
-### List active assets
+### Listar ativos ativos
 
 ```http
 GET http://localhost:8082/api/v1/assets
 ```
 
-Expected initial catalog:
+Catálogo inicial:
 
 - TECH3
 - BANK4
@@ -42,32 +42,31 @@ GET http://localhost:8082/actuator/health
 GET http://localhost:8083/actuator/health
 ```
 
-## Local infrastructure
-
-Copy the environment example:
+## Execução local
 
 ```bash
 cp .env.example .env
-```
-
-Then start PostgreSQL, Redis and RabbitMQ:
-
-```bash
 docker compose up -d postgres redis rabbitmq
 ```
 
-Run a service from the repository root:
+Executar somente o Market Service:
 
 ```bash
-mvn -f services/market-service/pom.xml spring-boot:run
+mvn -f backend/market-service/pom.xml spring-boot:run
 ```
 
-## Next implementation order
+Compilar todos os serviços Java:
 
-1. registration and login in auth-service;
-2. JWT validation;
-3. creation and validation of orders;
-4. Order Book with price-time priority;
+```bash
+mvn -f backend/pom.xml clean verify
+```
+
+## Próxima ordem de implementação
+
+1. cadastro e login no auth-service;
+2. JWT;
+3. criação e validação de ordens;
+4. Order Book com prioridade preço-tempo;
 5. Matching Engine;
-6. balance and asset reservations;
-7. WebSocket and RabbitMQ integration.
+6. reservas de saldo e ativos;
+7. WebSocket e RabbitMQ.

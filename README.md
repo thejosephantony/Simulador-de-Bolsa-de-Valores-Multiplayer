@@ -186,7 +186,7 @@ A arquitetura inicial será baseada em serviços independentes executados em con
 ### Backend
 
 - Java 21
-- Spring Boot 3
+- Spring Boot 4.1.1
 - Spring Web
 - Spring Data JPA
 - Spring Security
@@ -902,33 +902,35 @@ Estrutura proposta:
 ```text
 stock-market-simulator/
 │
-├── frontend/
-│
-├── services/
-│   ├── gateway/
+├── backend/
+│   ├── pom.xml
 │   ├── auth-service/
 │   ├── market-service/
 │   ├── portfolio-service/
 │   ├── realtime-service/
-│   └── agent-service/
+│   ├── agent-service/
+│   ├── gateway/
+│   └── ai-service/
 │
-├── ai-service/
+├── frontend/
 │
 ├── infra/
-│   ├── docker/
+│   ├── db/
+│   ├── rabbitmq/
 │   ├── prometheus/
-│   ├── grafana/
-│   └── rabbitmq/
+│   └── grafana/
 │
 ├── tests/
+│   ├── integration/
 │   ├── performance/
-│   └── integration/
+│   └── failure/
 │
 ├── docs/
 │   ├── architecture/
 │   ├── adr/
-│   ├── diagrams/
-│   └── api/
+│   ├── api/
+│   ├── events/
+│   └── diagrams/
 │
 ├── scripts/
 ├── docker-compose.yml
