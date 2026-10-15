@@ -1,0 +1,16 @@
+CREATE TABLE assets (
+    id UUID PRIMARY KEY,
+    ticker VARCHAR(12) NOT NULL UNIQUE,
+    name VARCHAR(120) NOT NULL,
+    initial_price NUMERIC(19,4) NOT NULL CHECK (initial_price > 0),
+    current_price NUMERIC(19,4) NOT NULL CHECK (current_price > 0),
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO assets (id, ticker, name, initial_price, current_price) VALUES
+('11111111-1111-1111-1111-111111111111', 'TECH3', 'Tech Virtual S.A.', 25.0000, 25.0000),
+('22222222-2222-2222-2222-222222222222', 'BANK4', 'Bank Virtual S.A.', 18.0000, 18.0000),
+('33333333-3333-3333-3333-333333333333', 'ENER3', 'Energia Virtual S.A.', 32.0000, 32.0000),
+('44444444-4444-4444-4444-444444444444', 'FOOD3', 'Food Virtual S.A.', 14.5000, 14.5000),
+('55555555-5555-5555-5555-555555555555', 'RETL3', 'Retail Virtual S.A.', 21.0000, 21.0000);
