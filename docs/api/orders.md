@@ -60,6 +60,10 @@ A gravação ocorre em uma transação. A migration `V2__create_orders.sql` adic
 de integridade e versão otimista para futuras alterações concorrentes. A
 migration inicial e o catálogo de ativos são preservados.
 
+O Market Service utiliza o starter `spring-boot-starter-flyway` e o módulo
+`flyway-database-postgresql`, para executar as migrations automaticamente antes
+da validação do schema pelo Hibernate no Spring Boot 4.
+
 A sequência é uma coluna identity única, gerada pelo PostgreSQL e recuperada
 antes da resposta. Ela evita contadores locais por instância e fornece uma
 referência de ordenação para a próxima etapa. Pode ter lacunas após rollback e
