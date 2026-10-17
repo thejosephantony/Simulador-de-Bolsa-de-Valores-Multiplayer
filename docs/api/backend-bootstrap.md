@@ -34,6 +34,24 @@ Catálogo inicial:
 - FOOD3
 - RETL3
 
+### Criar uma ordem
+
+```http
+POST http://localhost:8082/api/v1/orders
+Content-Type: application/json
+
+{
+  "userId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "assetId": "11111111-1111-1111-1111-111111111111",
+  "side": "BUY",
+  "price": 25.1234,
+  "quantity": 100
+}
+```
+
+Retorna `201 Created` com a ordem persistida em `PENDING`. Contrato, regras de
+validação, respostas de erro e limites desta etapa: [Ordens](orders.md).
+
 ## Health checks
 
 ```text
@@ -65,8 +83,7 @@ mvn -f backend/pom.xml clean verify
 
 1. cadastro e login no auth-service;
 2. JWT;
-3. criação e validação de ordens;
-4. Order Book com prioridade preço-tempo;
-5. Matching Engine;
-6. reservas de saldo e ativos;
-7. WebSocket e RabbitMQ.
+3. Order Book com prioridade preço-tempo;
+4. Matching Engine;
+5. reservas de saldo e ativos;
+6. WebSocket e RabbitMQ.

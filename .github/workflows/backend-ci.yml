@@ -4,12 +4,14 @@ on:
   push:
     paths:
       - "backend/**"
+      - "tests/integration/**"
       - "docker-compose.yml"
       - ".env.example"
       - ".github/workflows/backend-ci.yml"
   pull_request:
     paths:
       - "backend/**"
+      - "tests/integration/**"
       - "docker-compose.yml"
       - ".env.example"
       - ".github/workflows/backend-ci.yml"
@@ -17,6 +19,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: stock_market
+          POSTGRES_USER: stock_market
+          POSTGRES_PASSWORD: stock_market
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U stock_market -d stock_market"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
 
     steps:
       - name: Checkout
@@ -31,6 +48,24 @@ jobs:
 
       - name: Build backend
         run: mvn -B -ntp -f backend/pom.xml clean verify
+
+      - name: Start Market Service
+        run: |
+          java -jar backend/market-service/target/market-service-*.jar > "$RUNNER_TEMP/market-service.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/market-service.pid"
+
+      - name: Test orders with PostgreSQL
+        run: python3 tests/integration/test_market_orders.py
+
+      - name: Stop Market Service
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/market-service.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/market-service.pid")" || true
+          fi
+          if [ "${{ job.status }}" != "success" ] && [ -f "$RUNNER_TEMP/market-service.log" ]; then
+            cat "$RUNNER_TEMP/market-service.log"
+          fi
 
       - name: Validate Docker Compose
         run: docker compose config

@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: market-service
+  jackson:
+    datatype:
+      enum:
+        fail-on-numbers-for-enums: true
+    deserialization:
+      accept-float-as-int: false
+      fail-on-unknown-properties: true
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${POSTGRES_DB:stock_market}
     username: ${POSTGRES_USER:stock_market}
