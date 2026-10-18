@@ -61,8 +61,8 @@ export function MyOrders({ orders, onChanged }: Props) {
                 <td className={order.side === 'BUY' ? 'up' : 'down'}>
                   {order.side === 'BUY' ? 'Compra' : 'Venda'}
                 </td>
-                <td className="num right">{formatMoney(order.price)}</td>
-                <td className="num right">{formatQuantity(order.quantity)}</td>
+                <td className="num">{formatMoney(order.price)}</td>
+                <td className="num">{formatQuantity(order.quantity)}</td>
                 <td>
                   <span className={`badge ${order.status.toLowerCase()}`}>{STATUS_LABEL[order.status]}</span>
                 </td>
