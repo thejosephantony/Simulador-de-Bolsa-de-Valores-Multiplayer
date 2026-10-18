@@ -1,0 +1,590 @@
+:root {
+  --bg: #0b0f14;
+  --surface: #121821;
+  --surface-2: #19212c;
+  --border: #243040;
+  --text: #e6edf3;
+  --muted: #8b98a8;
+  --accent: #3b82f6;
+  --buy: #16a34a;
+  --buy-soft: rgba(22, 163, 74, 0.14);
+  --sell: #dc2626;
+  --sell-soft: rgba(220, 38, 38, 0.14);
+  --up: #22c55e;
+  --down: #ef4444;
+  --radius: 10px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 13px;
+  margin: 12px 0 8px;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.right {
+  text-align: right;
+}
+
+.up {
+  color: var(--up);
+}
+
+.down {
+  color: var(--down);
+}
+
+.flat {
+  color: var(--muted);
+}
+
+.empty {
+  padding: 12px 0;
+  margin: 0;
+}
+
+/* ---------- Botões e formulários ---------- */
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s, background 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):hover {
+  filter: brightness(1.12);
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn.buy {
+  background: var(--buy);
+  color: #fff;
+}
+
+.btn.sell {
+  background: var(--sell);
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: var(--border);
+}
+
+.btn.ghost:not(:disabled):hover {
+  background: var(--surface-2);
+}
+
+.btn.small {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.field input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+  width: 100%;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+}
+
+.field-error {
+  color: var(--down);
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.alert.error {
+  background: var(--sell-soft);
+  color: #fca5a5;
+}
+
+.alert.success {
+  background: var(--buy-soft);
+  color: #86efac;
+}
+
+/* ---------- Login ---------- */
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-header h1 {
+  font-size: 24px;
+  margin-top: 6px;
+}
+
+.auth-header p {
+  margin: 4px 0 0;
+}
+
+.brand-mark {
+  color: var(--up);
+  font-size: 20px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.tab.active {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- Home Broker ---------- */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status.online .dot {
+  background: var(--up);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.status.offline {
+  color: #fca5a5;
+}
+
+.status.offline .dot {
+  background: var(--down);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.layout {
+  display: grid;
+  gap: 16px;
+  padding: 16px 20px;
+  flex: 1;
+  grid-template-columns: 260px minmax(0, 1fr) 320px;
+  /* A última linha cresce para ocupar o resto da tela. */
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    'assets book order'
+    'assets book portfolio'
+    'orders orders portfolio';
+  align-items: stretch;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-width: 0;
+}
+
+.assets-panel {
+  grid-area: assets;
+}
+
+.book-panel {
+  grid-area: book;
+}
+
+.order-panel {
+  grid-area: order;
+}
+
+.portfolio-panel {
+  grid-area: portfolio;
+}
+
+.orders-panel {
+  grid-area: orders;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:
+      'assets order'
+      'book book'
+      'portfolio portfolio'
+      'orders orders';
+  }
+}
+
+@media (max-width: 700px) {
+  .layout {
+    padding: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-areas: 'assets' 'order' 'book' 'portfolio' 'orders';
+  }
+}
+
+/* Ativos */
+
+.asset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.asset-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.asset-item:hover {
+  background: var(--surface-2);
+}
+
+.asset-item.selected {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.asset-main,
+.asset-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-price {
+  align-items: flex-end;
+}
+
+/* Tabelas */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table.compact td {
+  padding: 5px 8px;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Livro de ofertas */
+
+.book {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 500px) {
+  .book {
+    grid-template-columns: 1fr;
+  }
+}
+
+.book-side h3 {
+  margin-top: 0;
+}
+
+.book-side.buy h3 {
+  color: var(--up);
+}
+
+.book-side.sell h3 {
+  color: var(--down);
+}
+
+.book-row {
+  cursor: pointer;
+}
+
+.book-side.buy .book-row {
+  background: linear-gradient(to left, var(--buy-soft) var(--depth), transparent var(--depth));
+}
+
+.book-side.sell .book-row {
+  background: linear-gradient(to left, var(--sell-soft) var(--depth), transparent var(--depth));
+}
+
+.book-row:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.book-side.buy .price {
+  color: var(--up);
+}
+
+.book-side.sell .price {
+  color: var(--down);
+}
+
+/* Ordem */
+
+.side-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.side-btn {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.side-btn.buy.active {
+  background: var(--buy-soft);
+  border-color: var(--buy);
+  color: var(--up);
+}
+
+.side-btn.sell.active {
+  background: var(--sell-soft);
+  border-color: var(--sell);
+  color: var(--down);
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* Carteira */
+
+.balances {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.balances div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.balances dt {
+  color: var(--muted);
+}
+
+.balances dd {
+  margin: 0;
+}
+
+.balances .big {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Status das ordens */
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge.open {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+}
+
+.badge.cancelled {
+  background: var(--surface-2);
+  color: var(--muted);
+}
