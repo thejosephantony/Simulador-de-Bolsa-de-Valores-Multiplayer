@@ -20,6 +20,13 @@ spring:
     schemas: market
     create-schemas: true
 
+security:
+  jwt:
+    secret: ${JWT_SECRET:change-this-demo-secret-key-with-at-least-32-bytes}
+    issuer: stock-market-auth
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:5173}
+
 management:
   endpoints:
     web:
