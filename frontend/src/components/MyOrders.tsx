@@ -44,7 +44,7 @@ export function MyOrders({ orders, onChanged }: Props) {
         <table className="table">
           <thead>
             <tr>
-              <th>Horário</th>
+              <th>Data/Horário</th>
               <th>Ativo</th>
               <th>Tipo</th>
               <th className="right">Preço</th>

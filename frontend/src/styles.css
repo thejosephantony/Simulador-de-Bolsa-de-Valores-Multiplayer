@@ -537,8 +537,14 @@ input {
 
 .order-total {
   display: flex;
+  flex-direction: column;
+}
+
+.line {
+  display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
 /* Carteira */

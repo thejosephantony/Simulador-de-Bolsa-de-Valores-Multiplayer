@@ -49,8 +49,8 @@ function Side({
                 style={{ ['--depth' as string]: `${(level.quantity / maxQty) * 100}%` }}
               >
                 <td className="num price">{formatMoney(level.price)}</td>
-                <td className="num right">{formatQuantity(level.quantity)}</td>
-                <td className="num right muted">{level.orderCount}</td>
+                <td className="num">{formatQuantity(level.quantity)}</td>
+                <td className="num muted">{level.orderCount}</td>
               </tr>
             ))
           )}

@@ -110,14 +110,21 @@ export function OrderForm({ asset, pickedPrice, onCreated }: Props) {
       </div>
 
       <div className="order-total">
-        <span className="muted">Total estimado</span>
-        <strong className="num">{formatMoney(total)}</strong>
+        <div className="line">
+          <span className="muted">Ativo selecionado</span>
+          <strong className="num">{asset.ticker}</strong>
+        </div>
+
+        <div className="line">
+          <span className="muted">Total estimado</span>
+          <strong className="num">{formatMoney(total)}</strong>
+        </div>
       </div>
 
       {feedback && <div className={`alert ${feedback.kind}`}>{feedback.text}</div>}
 
       <button type="submit" className={`btn ${side === 'BUY' ? 'buy' : 'sell'}`} disabled={!valid || submitting}>
-        {submitting ? 'Enviando…' : `${side === 'BUY' ? 'Comprar' : 'Vender'} ${asset.ticker}`}
+        {submitting ? 'Enviando…' : `${side === 'BUY' ? 'Enviar ordem de compra' : 'Enviar ordem de venda'}`}
       </button>
     </form>
   );
