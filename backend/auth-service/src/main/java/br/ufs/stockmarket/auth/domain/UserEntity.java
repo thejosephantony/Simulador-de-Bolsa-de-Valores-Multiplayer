@@ -33,6 +33,12 @@ public class UserEntity {
     protected UserEntity() {
     }
 
+    public UserEntity(String username, String email, String passwordHash) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
+
     public UUID getId() {
         return id;
     }

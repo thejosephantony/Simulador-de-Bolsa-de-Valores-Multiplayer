@@ -1,17 +1,23 @@
 name: Backend CI
 
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     paths:
       - "backend/**"
       - "docker-compose.yml"
       - ".env.example"
+      - "scripts/part1-smoke-test.sh"
       - ".github/workflows/backend-ci.yml"
   pull_request:
     paths:
       - "backend/**"
       - "docker-compose.yml"
       - ".env.example"
+      - "scripts/part1-smoke-test.sh"
       - ".github/workflows/backend-ci.yml"
 
 jobs:
@@ -34,3 +40,17 @@ jobs:
 
       - name: Validate Docker Compose
         run: docker compose config
+
+      - name: Start Part 1 backend
+        run: docker compose up -d --build postgres auth-service market-service portfolio-service
+
+      - name: Run Part 1 smoke test
+        run: bash scripts/part1-smoke-test.sh
+
+      - name: Show service logs on failure
+        if: failure()
+        run: docker compose logs --no-color auth-service market-service portfolio-service postgres
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v

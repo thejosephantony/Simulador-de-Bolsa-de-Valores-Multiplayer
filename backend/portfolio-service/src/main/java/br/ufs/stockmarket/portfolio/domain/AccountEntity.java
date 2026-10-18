@@ -35,6 +35,12 @@ public class AccountEntity {
     protected AccountEntity() {
     }
 
+    public AccountEntity(UUID userId, BigDecimal initialBalance) {
+        this.userId = userId;
+        this.balance = initialBalance;
+        this.reservedBalance = BigDecimal.ZERO;
+    }
+
     public UUID getId() { return id; }
     public UUID getUserId() { return userId; }
     public BigDecimal getBalance() { return balance; }
