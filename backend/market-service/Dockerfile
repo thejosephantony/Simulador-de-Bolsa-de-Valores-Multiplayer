@@ -2,10 +2,14 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
 
 COPY backend/pom.xml backend/pom.xml
+COPY backend/ledger-core/pom.xml backend/ledger-core/pom.xml
+COPY backend/ledger-core/src backend/ledger-core/src
 COPY backend/market-service/pom.xml backend/market-service/pom.xml
 COPY backend/market-service/src backend/market-service/src
 
-RUN mvn -B -ntp -f backend/market-service/pom.xml clean package -DskipTests
+RUN mvn -B -ntp -f backend/pom.xml -N install \
+ && mvn -B -ntp -f backend/ledger-core/pom.xml install -DskipTests \
+ && mvn -B -ntp -f backend/market-service/pom.xml clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

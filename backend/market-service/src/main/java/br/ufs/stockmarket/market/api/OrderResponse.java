@@ -17,7 +17,9 @@ public record OrderResponse(
         long quantity,
         OrderStatus status,
         OffsetDateTime createdAt,
-        OffsetDateTime cancelledAt
+        OffsetDateTime cancelledAt,
+        long remainingQuantity,
+        long filledQuantity
 ) {
     public static OrderResponse from(OrderEntity order, String ticker) {
         return new OrderResponse(
@@ -29,7 +31,9 @@ public record OrderResponse(
                 order.getQuantity(),
                 order.getStatus(),
                 order.getCreatedAt(),
-                order.getCancelledAt()
+                order.getCancelledAt(),
+                order.getRemainingQuantity(),
+                order.getFilledQuantity()
         );
     }
 }

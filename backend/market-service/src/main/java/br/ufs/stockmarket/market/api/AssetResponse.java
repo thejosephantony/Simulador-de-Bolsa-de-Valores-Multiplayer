@@ -8,6 +8,10 @@ public record AssetResponse(
         String ticker,
         String name,
         BigDecimal initialPrice,
-        BigDecimal currentPrice
+        BigDecimal currentPrice,
+        BigDecimal priceChangePercent,
+        BigDecimal tradedVolume,
+        BigDecimal bestBid,
+        BigDecimal bestAsk
 ) {
 }

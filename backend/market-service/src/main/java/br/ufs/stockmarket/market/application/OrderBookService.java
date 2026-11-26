@@ -37,7 +37,8 @@ public class OrderBookService {
         AssetEntity asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new NotFoundException("Ativo não encontrado."));
 
-        List<OrderEntity> openOrders = orderRepository.findAllByAssetIdAndStatus(assetId, OrderStatus.OPEN);
+        List<OrderEntity> openOrders = orderRepository.findAllByAssetIdAndStatusIn(assetId,
+                List.of(OrderStatus.OPEN, OrderStatus.PARTIALLY_FILLED));
 
         return new OrderBookResponse(
                 asset.getId(),
@@ -56,10 +57,10 @@ public class OrderBookService {
         Map<BigDecimal, MutableLevel> levels = new TreeMap<>(priceComparator);
 
         orders.stream()
-                .filter(order -> order.getSide() == side)
+                .filter(order -> order.getSide() == side && order.getRemainingQuantity() > 0)
                 .forEach(order -> levels
                         .computeIfAbsent(order.getPrice(), ignored -> new MutableLevel())
-                        .add(order.getQuantity()));
+                        .add(order.getRemainingQuantity()));
 
         List<BookLevelResponse> result = new ArrayList<>();
         levels.forEach((price, level) ->
@@ -73,7 +74,7 @@ public class OrderBookService {
         private long orderCount;
 
         private void add(long orderQuantity) {
-            quantity += orderQuantity;
+            quantity = Math.addExact(quantity, orderQuantity);
             orderCount++;
         }
     }
