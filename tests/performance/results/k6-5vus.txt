@@ -1,0 +1,29 @@
+
+     ✓ assets 200
+     ✓ book 200
+     ✓ order 201/422
+     ✓ portfolio 200
+
+     checks.........................: 100.00% 1740 out of 1740
+     data_received..................: 4.3 MB  93 kB/s
+     data_sent......................: 629 kB  14 kB/s
+     http_req_blocked...............: avg=8.81µs   min=1.28µs   med=3.7µs    p(90)=6.42µs   p(95)=7.61µs   p(99)=200.64µs max=993.07µs
+     http_req_connecting............: avg=2.27µs   min=0s       med=0s       p(90)=0s       p(95)=0s       p(99)=130.17µs max=282.53µs
+     http_req_duration..............: avg=5.06ms   min=1.23ms   med=2.89ms   p(90)=11.44ms  p(95)=15.17ms  p(99)=26.12ms  max=71.35ms 
+       { expected_response:true }...: avg=5.06ms   min=1.23ms   med=2.89ms   p(90)=11.44ms  p(95)=15.17ms  p(99)=26.12ms  max=71.35ms 
+     ✓ { name:POST /orders }........: avg=11.34ms  min=4.31ms   med=10.27ms  p(90)=19.02ms  p(95)=23.17ms  p(99)=30.3ms   max=45.83ms 
+   ✓ http_req_failed................: 0.00%   0 out of 1756
+     http_req_receiving.............: avg=93.54µs  min=17.76µs  med=79.5µs   p(90)=126.05µs p(95)=143.64µs p(99)=224.62µs max=10.85ms 
+     http_req_sending...............: avg=22.86µs  min=4.28µs   med=16.14µs  p(90)=42.55µs  p(95)=50.54µs  p(99)=82.99µs  max=884.1µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       p(90)=0s       p(95)=0s       p(99)=0s       max=0s      
+     http_req_waiting...............: avg=4.94ms   min=1.16ms   med=2.78ms   p(90)=11.32ms  p(95)=15.08ms  p(99)=26.02ms  max=71.18ms 
+     http_reqs......................: 1756    38.401894/s
+     iteration_duration.............: avg=520.87ms min=510.42ms med=519.64ms p(90)=529.64ms p(95)=534.28ms p(99)=543.82ms max=558.52ms
+     iterations.....................: 435     9.512998/s
+     order_latency..................: avg=11.34ms  min=4.31ms   med=10.27ms  p(90)=19.02ms  p(95)=23.17ms  p(99)=30.3ms   max=45.83ms 
+     orders_accepted................: 435     9.512998/s
+     orders_with_trade..............: 201     4.395661/s
+     shares_traded..................: 201     4.395661/s
+     vus............................: 5       min=5            max=5
+     vus_max........................: 5       min=5            max=5
+

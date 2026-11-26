@@ -893,6 +893,24 @@ docker compose down
 
 > Os comandos acima representam a configuração pretendida do projeto e deverão acompanhar a evolução da implementação.
 
+### Serviços disponíveis (Parte 2)
+
+| Serviço | Porta | Health check |
+|---|---|---|
+| auth-service | 8081 | `/actuator/health` |
+| market-service | 8082 | `/actuator/health` |
+| portfolio-service | 8083 | `/actuator/health` |
+| agent-service | 8084 | `/actuator/health` ([agentes](docs/agents.md)) |
+| rabbitmq (painel) | 15672 | `rabbitmq-diagnostics ping` |
+| rabbitmq-setup | — | executa uma vez e termina (DLQ) |
+| prometheus | 9090 | `/-/ready` |
+| grafana | 3000 | — |
+| postgres | 5432 | `pg_isready` |
+
+Contas de demonstração e emissão inicial: [docs/seeds.md](docs/seeds.md). Os seeds só rodam em banco novo; para um ambiente de teste do zero: `docker compose down -v && docker compose up -d --build` (apaga os volumes).
+
+Métricas: cada serviço expõe `/actuator/prometheus`; dashboard provisionado no Grafana ([infra/README.md](infra/README.md)). Carga e falhas: [tests/README.md](tests/README.md).
+
 ---
 
 ## 22. Estrutura do repositório

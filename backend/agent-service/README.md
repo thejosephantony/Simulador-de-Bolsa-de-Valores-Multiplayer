@@ -1,15 +1,10 @@
 # Agent Service
 
-Componente responsável pelos investidores automatizados do mercado.
+Investidores automatizados do mercado. Documentação completa: [docs/agents.md](../../docs/agents.md).
 
-Estratégias previstas:
+- Porta: 8084.
+- Estratégias implementadas: `MARKET_MAKER` e `MOMENTUM` (regras determinísticas, sem ML).
+- Os agentes negociam pela mesma API REST dos humanos e nunca alteram diretamente saldo, carteira ou trades.
+- Configuração em `src/main/resources/application.yml` (`agents.list`).
 
-- Market Maker;
-- Momentum;
-- Contrarian;
-- Conservador;
-- Agressivo.
-
-Os agentes devem enviar ordens pelo fluxo normal do sistema e nunca alterar diretamente saldo, carteira ou trades.
-
-A primeira implementação deve usar regras determinísticas. O `ai-service` é opcional e poderá fornecer sinais de Machine Learning posteriormente.
+Testes: `mvn -f backend/pom.xml -pl agent-service test`.

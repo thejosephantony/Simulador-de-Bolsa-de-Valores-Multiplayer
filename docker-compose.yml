@@ -45,6 +45,21 @@ services:
       timeout: 5s
       retries: 10
 
+  # Executa uma vez e termina: configura a DLQ da fila do Realtime (infra/rabbitmq/setup.sh).
+  rabbitmq-setup:
+    image: curlimages/curl:8.11.1
+    container_name: stock-market-rabbitmq-setup
+    entrypoint: ["sh", "/setup/setup.sh"]
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-stock_market}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-stock_market}
+    volumes:
+      - ./infra/rabbitmq/setup.sh:/setup/setup.sh:ro
+    restart: "no"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   auth-service:
     build:
       context: .
@@ -64,6 +79,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-ec", "exec 3<>/dev/tcp/127.0.0.1/8081; printf 'GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3; grep -q '^HTTP/1.1 200' <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 15s
 
   market-service:
     build:
@@ -90,6 +111,12 @@ services:
         condition: service_healthy
       portfolio-service:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-ec", "exec 3<>/dev/tcp/127.0.0.1/8082; printf 'GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3; grep -q '^HTTP/1.1 200' <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 15s
 
   portfolio-service:
     build:
@@ -117,6 +144,71 @@ services:
       retries: 24
       start_period: 15s
 
+  # Investidores automatizados: negociam pela mesma API REST dos humanos (docs/agents.md).
+  agent-service:
+    build:
+      context: .
+      dockerfile: backend/agent-service/Dockerfile
+    container_name: stock-market-agents
+    environment:
+      AGENT_SERVICE_PORT: 8084
+      AUTH_URL: http://auth-service:8081
+      MARKET_URL: http://market-service:8082
+      PORTFOLIO_URL: http://portfolio-service:8083
+      AGENT_ADMIN_TOKEN: ${AGENT_ADMIN_TOKEN:-change-this-agent-admin-token}
+      AGENTS_START_PAUSED: ${AGENTS_START_PAUSED:-false}
+    ports:
+      - "8084:8084"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      market-service:
+        condition: service_healthy
+      portfolio-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-ec", "exec 3<>/dev/tcp/127.0.0.1/8084; printf 'GET /actuator/health HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3; grep -q '^HTTP/1.1 200' <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 15s
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: stock-market-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9090/-/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: stock-market-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/simulador-overview.json
+    volumes:
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      prometheus:
+        condition: service_healthy
+
   frontend:
     build:
       context: ./frontend
@@ -137,3 +229,5 @@ services:
 volumes:
   postgres_data:
   rabbitmq_data:
+  prometheus_data:
+  grafana_data:
