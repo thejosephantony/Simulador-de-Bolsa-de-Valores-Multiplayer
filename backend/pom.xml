@@ -19,6 +19,7 @@
     <name>Stock Market Simulator Services</name>
 
     <modules>
+        <module>ledger-core</module>
         <module>auth-service</module>
         <module>market-service</module>
         <module>portfolio-service</module>
