@@ -37,6 +37,13 @@ public class AssetEntity {
     protected AssetEntity() {
     }
 
+    public void updateCurrentPrice(BigDecimal price) {
+        if (price == null || price.signum() <= 0) {
+            throw new IllegalArgumentException("O preço negociado deve ser positivo.");
+        }
+        this.currentPrice = price;
+    }
+
     public UUID getId() { return id; }
     public String getTicker() { return ticker; }
     public String getName() { return name; }

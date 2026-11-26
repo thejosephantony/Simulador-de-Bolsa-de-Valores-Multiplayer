@@ -19,6 +19,21 @@ spring:
     enabled: true
     schemas: market
     create-schemas: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_DEFAULT_USER:stock_market}
+    password: ${RABBITMQ_DEFAULT_PASS:stock_market}
+    connection-timeout: 3s
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+
+market:
+  outbox:
+    enabled: ${MARKET_OUTBOX_ENABLED:true}
+    delay-ms: ${MARKET_OUTBOX_DELAY_MS:500}
 
 security:
   jwt:
@@ -28,6 +43,9 @@ security:
     allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:5173}
 
 management:
+  health:
+    rabbit:
+      enabled: false
   endpoints:
     web:
       exposure:
