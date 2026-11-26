@@ -49,8 +49,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
   endpoint:
     health:
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: market-service
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true

@@ -1,0 +1,48 @@
+server:
+  port: ${AGENT_SERVICE_PORT:8084}
+
+spring:
+  application:
+    name: agent-service
+
+agents:
+  auth-url: ${AUTH_URL:http://localhost:8081}
+  market-url: ${MARKET_URL:http://localhost:8082}
+  portfolio-url: ${PORTFOLIO_URL:http://localhost:8083}
+  admin-token: ${AGENT_ADMIN_TOKEN:change-this-agent-admin-token}
+  start-paused: ${AGENTS_START_PAUSED:false}
+  list:
+    - name: market-maker
+      username: agent_market_maker
+      password: ${AGENT_MARKET_MAKER_PASSWORD:Agent@2026!}
+      strategy: MARKET_MAKER
+      interval-ms: ${AGENT_MARKET_MAKER_INTERVAL_MS:3000}
+      max-order-quantity: 20
+      max-open-orders: 10
+      order-ttl-seconds: 20
+      spread-percent: 1.0
+    - name: momentum
+      username: agent_momentum
+      password: ${AGENT_MOMENTUM_PASSWORD:Agent@2026!}
+      strategy: MOMENTUM
+      interval-ms: ${AGENT_MOMENTUM_INTERVAL_MS:2000}
+      max-order-quantity: 10
+      max-open-orders: 3
+      order-ttl-seconds: 10
+      spread-percent: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: agent-service
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true

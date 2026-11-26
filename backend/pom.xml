@@ -23,6 +23,7 @@
         <module>auth-service</module>
         <module>market-service</module>
         <module>portfolio-service</module>
+        <module>agent-service</module>
     </modules>
 
     <properties>
